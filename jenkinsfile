@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage ("Greeting"){
             steps {
-                sh 'echo "helloo!!!"'
+                bat 'echo "helloo!!!"'
             }
         }
     }

@@ -1,27 +1,28 @@
 pipeline {
-    agent any
+    agent any 
     stages {
-        stage ("Clean up"){
+        stage ("Clean up") {
             steps {
-                 bat 'rd /s /q "C:\\Users\\Nadine Ziedi\\.jenkins\\workspace\\astonvilla"'
+                bat 'del /s /q "C:\\Users\\Nadine Ziedi\\.jenkins\\workspace\\astonvilla\\*"'
+                bat 'rmdir /s /q "C:\\Users\\Nadine Ziedi\\.jenkins\\workspace\\astonvilla" 2>nul'
             }
         }
-        stage ("Clone repo"){
+        stage ("Clone repo") {
             steps {
-                bat "git clone https://github.com/nadineziadi/astonvilla-stage.git"
+                bat 'git clone https://github.com/Raouf-Rhimi/astonvilla-app.git'
             }
         }
         stage ("Generate docker image") {
             steps {
-                dir("astonvilla-app"){
-                    bat "docker build -t nadineziadi/astonvilla-app:1.1.%BUILD_NUMBER% ."
+                dir("astonvilla-app") {
+                    bat 'docker build -t kakachisensei/astonvilla-app:1.1.${env.BUILD_NUMBER} .'
                 }
             }
         }
         stage ("Push docker image") {
             steps {
-                dir("astonvilla-app"){
-                    bat "docker push nadineziadi/astonvilla-app:1.1.%BUILD_NUMBER%"
+                dir("astonvilla-app") {
+                    bat 'docker push kakachisensei/astonvilla-app:1.1.${env.BUILD_NUMBER}'
                 }
             }
         }

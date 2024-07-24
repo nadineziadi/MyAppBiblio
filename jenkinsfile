@@ -3,8 +3,7 @@ pipeline {
     stages {
         stage ("Clean up"){
             steps {
-                bat 'del /Q /S C:\\Users\\Nadine Ziedi\\.jenkins\\workspace\\astonvilla\\*'
-                bat 'dir C:\\Users\\Nadine Ziedi\\.jenkins\\workspace\\astonvilla'
+                 bat 'rd /s /q "C:\\Users\\Nadine Ziedi\\.jenkins\\workspace\\astonvilla"'
             }
         }
         stage ("Clone repo"){

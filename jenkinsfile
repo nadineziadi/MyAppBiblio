@@ -1,25 +1,24 @@
 pipeline {
     agent any 
     stages {
-        stage ("Clean up") {
+        stage("Clean up") {
             steps {
-                bat 'del /s /q "C:\\Users\\Nadine Ziedi\\.jenkins\\workspace\\astonvilla\\*"'
-                bat 'rmdir /s /q "C:\\Users\\Nadine Ziedi\\.jenkins\\workspace\\astonvilla" 2>nul'
+                bat 'powershell -Command "Remove-Item -LiteralPath \'C:\\Users\\Nadine Ziedi\\.jenkins\\workspace\\astonvilla\\*\' -Force -Recurse"'
             }
         }
-        stage ("Clone repo") {
+        stage("Clone repo") {
             steps {
                 bat 'git clone https://github.com/Raouf-Rhimi/astonvilla-app.git'
             }
         }
-        stage ("Generate docker image") {
+        stage("Generate docker image") {
             steps {
                 dir("astonvilla-app") {
                     bat 'docker build -t kakachisensei/astonvilla-app:1.1.${env.BUILD_NUMBER} .'
                 }
             }
         }
-        stage ("Push docker image") {
+        stage("Push docker image") {
             steps {
                 dir("astonvilla-app") {
                     bat 'docker push kakachisensei/astonvilla-app:1.1.${env.BUILD_NUMBER}'
@@ -28,3 +27,4 @@ pipeline {
         }
     }
 }
+

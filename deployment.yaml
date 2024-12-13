@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: biblio
+spec:
+  replicas: 3 
+  selector:
+    matchLabels:
+      app: biblio
+  template:
+    metadata:
+      labels:
+        app: biblio
+    spec:
+      containers:
+        - name: biblio
+          image: nadineziadi/biblioapp:1.0.22
+          ports:
+            - containerPort: 80 

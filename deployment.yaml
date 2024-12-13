@@ -1,19 +1,18 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: argoproj.io/v1alpha1
+kind: Application
 metadata:
-  name: biblio
+  name: biblio-app
+  namespace: argocd
 spec:
-  replicas: 3 
-  selector:
-    matchLabels:
-      app: biblio
-  template:
-    metadata:
-      labels:
-        app: biblio
-    spec:
-      containers:
-        - name: biblio
-          image: nadineziadi/biblioapp:1.0.22
-          ports:
-            - containerPort: 80 
+  project: default
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+  source:
+    path: biblio-app 
+    repoURL: "https://github.com/nadineziadi/argocdbiblioApp.git" 
+    targetRevision: HEAD 
+  syncPolicy:
+    automated: {} 
+  syncOptions:
+    - CreateNamespace=true

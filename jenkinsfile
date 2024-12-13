@@ -1,13 +1,36 @@
 pipeline {
-    agent any 
+    agent any
+    environment {
+        GITHUB_TOKEN = credentials('github-token')
+    }
     stages {
-        stage ("Greetings!"){
+        stage("Clean up") {
             steps {
-                sh 'echo "hiiiiiii!"'
+                deleteDir()
             }
         }
-       
+        stage('Checkout') {
+            steps {
+                git url: 'https://github.com/nadineziadi/MyAppBiblio.git'
+            }
+        }
+        stage("Generate docker image") {
+            steps {
+                sh "docker build -t nadineziadi/biblioapp:1.0.${env.BUILD_NUMBER} ."
+            }
+        }
+        stage("Push docker image") {
+            steps {
+                sh "docker push nadineziadi/biblioapp:1.0.${env.BUILD_NUMBER}"
+            }
+        }
+        stage("Clone gitops repo") {
+            steps {
+                sh "git clone https://github.com/nadineziadi/argocdbiblioApp.git"
+            }
         }
     }
+}
+
 
 
